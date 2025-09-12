@@ -115,12 +115,6 @@ class IEmployeeRepo(Protocol):
             account_id: int,
             name: str,
             role: model.EmployeeRole,
-            required_moderation: bool = False,
-            autoposting_permission: bool = False,
-            add_employee_permission: bool = False,
-            edit_employee_perm_permission: bool = False,
-            top_up_balance_permission: bool = False,
-            sign_up_social_net_permission: bool = False
     ) -> int:
         pass
 
@@ -129,7 +123,7 @@ class IEmployeeRepo(Protocol):
         pass
 
     @abstractmethod
-    async def get_employee_by_tg_user_id(self, tg_user_id: int) -> list[model.Employee]:
+    async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         pass
 
     @abstractmethod
