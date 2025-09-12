@@ -4,11 +4,11 @@ from typing import List, Optional
 from enum import Enum
 
 
-
 class EmployeeRole(Enum):
     ADMIN = "админ"
     MODERATOR = "модератор"
     EMPLOYEE = "сотрудник"
+
 
 @dataclass
 class Employee:
