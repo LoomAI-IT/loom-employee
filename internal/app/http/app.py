@@ -59,7 +59,7 @@ def include_employee_handlers(
         employee_controller.get_employee_by_id,
         methods=["GET"],
         tags=["Employee"],
-        response_model=GetEmployeeResponse,
+        response_model=model.Employee,
         summary="Получить сотрудника по ID",
         description="Возвращает информацию о сотруднике по его идентификатору"
     )
@@ -70,7 +70,7 @@ def include_employee_handlers(
         employee_controller.get_employees_by_organization,
         methods=["GET"],
         tags=["Employee"],
-        response_model=GetEmployeesByOrganizationResponse,
+        response_model=list[model.Employee],
         summary="Получить сотрудников организации",
         description="Возвращает список всех сотрудников указанной организации"
     )
