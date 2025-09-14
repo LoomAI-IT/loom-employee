@@ -34,6 +34,8 @@ class Config:
         self.otlp_host = os.getenv("KONTUR_OTEL_COLLECTOR_CONTAINER_NAME", "kontur-otel-collector")
         self.otlp_port = int(os.getenv("KONTUR_OTEL_COLLECTOR_GRPC_PORT", "4317"))
 
+        self.openai_api_key = os.getenv("OPENAI_API_KEY", None)
+
         # External services configuration
         self.kontur_authorization_host = os.getenv("KONTUR_AUTHORIZATION_CONTAINER_NAME", "localhost")
         self.kontur_authorization_port = int(os.getenv("KONTUR_AUTHORIZATION_PORT", "8081"))
