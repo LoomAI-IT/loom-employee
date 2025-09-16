@@ -75,21 +75,13 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"employee_id": employee_id}
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
-
                 self.logger.info("Get employee by ID request", {
-                    "account_id": account_id,
                     "employee_id": employee_id
                 })
 
                 employee = await self.employee_service.get_employee_by_id(employee_id)
 
                 self.logger.info("Employee retrieved successfully", {
-                    "account_id": account_id,
                     "employee_id": employee_id
                 })
 
@@ -143,21 +135,14 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"organization_id": organization_id}
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
 
                 self.logger.info("Get employees by organization request", {
-                    "account_id": account_id,
                     "organization_id": organization_id
                 })
 
                 employees = await self.employee_service.get_employees_by_organization(organization_id)
 
                 self.logger.info("Employees retrieved successfully", {
-                    "account_id": account_id,
                     "organization_id": organization_id,
                     "count": len(employees)
                 })
@@ -187,14 +172,8 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"employee_id": body.employee_id}
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
 
                 self.logger.info("Update employee permissions request", {
-                    "account_id": account_id,
                     "employee_id": body.employee_id
                 })
 
@@ -209,7 +188,6 @@ class EmployeeController(interface.IEmployeeController):
                 )
 
                 self.logger.info("Employee permissions updated successfully", {
-                    "account_id": account_id,
                     "employee_id": body.employee_id
                 })
 
@@ -235,14 +213,8 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"employee_id": body.employee_id, "role": body.role.value}
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
 
                 self.logger.info("Update employee role request", {
-                    "account_id": account_id,
                     "employee_id": body.employee_id,
                     "role": body.role.value
                 })
@@ -253,7 +225,6 @@ class EmployeeController(interface.IEmployeeController):
                 )
 
                 self.logger.info("Employee role updated successfully", {
-                    "account_id": account_id,
                     "employee_id": body.employee_id,
                     "role": body.role.value
                 })
@@ -276,21 +247,13 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"employee_id": employee_id}
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
-
                 self.logger.info("Delete employee request", {
-                    "account_id": account_id,
                     "employee_id": employee_id
                 })
 
                 await self.employee_service.delete_employee(employee_id)
 
                 self.logger.info("Employee deleted successfully", {
-                    "account_id": account_id,
                     "employee_id": employee_id
                 })
 
