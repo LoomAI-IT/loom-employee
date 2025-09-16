@@ -18,7 +18,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: model.EmployeeRole,
+            role: str
     ) -> int:
         with self.tracer.start_as_current_span(
                 "EmployeeRepo.create_employee",
@@ -27,7 +27,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
                     "organization_id": organization_id,
                     "account_id": account_id,
                     "name": name,
-                    "role": role.value
+                    "role": role
                 }
         ) as span:
             try:
@@ -36,7 +36,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
                     'invited_from_account_id': invited_from_account_id,
                     'account_id': account_id,
                     'name': name,
-                    'role': role.value,
+                    'role': role
                 }
 
                 employee_id = await self.db.insert(create_employee, args)

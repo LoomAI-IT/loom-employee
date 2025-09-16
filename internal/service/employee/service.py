@@ -20,7 +20,7 @@ class EmployeeService(interface.IEmployeeService):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: model.EmployeeRole
+            role: str
     ) -> int:
         with self.tracer.start_as_current_span(
                 "EmployeeService.create_employee",
@@ -29,7 +29,7 @@ class EmployeeService(interface.IEmployeeService):
                     "organization_id": organization_id,
                     "account_id": account_id,
                     "name": name,
-                    "role": role.value
+                    "role": role
                 }
         ) as span:
             try:

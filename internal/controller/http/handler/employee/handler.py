@@ -29,7 +29,7 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={
                     "organization_id": body.organization_id,
                     "name": body.name,
-                    "role": body.role.value
+                    "role": body.role
                 }
         ) as span:
             try:
@@ -38,7 +38,7 @@ class EmployeeController(interface.IEmployeeController):
                     "account_id": body.account_id,
                     "organization_id": body.organization_id,
                     "employee_name": body.name,
-                    "role": body.role.value
+                    "role": body.role
                 })
 
                 employee_id = await self.employee_service.create_employee(

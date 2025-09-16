@@ -8,7 +8,7 @@ class CreateEmployeeBody(BaseModel):
     organization_id: int
     invited_from_account_id: int
     name: str
-    role: EmployeeRole
+    role: str
 
     class Config:
         json_schema_extra = {

@@ -60,7 +60,7 @@ class IEmployeeService(Protocol):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: model.EmployeeRole
+            role: str
     ) -> int:
         pass
 
@@ -118,7 +118,7 @@ class IEmployeeRepo(Protocol):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: model.EmployeeRole,
+            role: str
     ) -> int:
         pass
 
