@@ -2,7 +2,7 @@
 create_employees_table = """
 CREATE TABLE IF NOT EXISTS employees (
     id SERIAL PRIMARY KEY,
-    organization_id INTEGER NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    organization_id INTEGER NOT NULL,
     
     invited_from_employee_id INTEGER NOT NULL,
     account_id INTEGER NOT NULL,
