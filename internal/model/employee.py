@@ -5,9 +5,9 @@ from enum import Enum
 
 
 class EmployeeRole(Enum):
-    ADMIN = "админ"
-    MODERATOR = "модератор"
-    EMPLOYEE = "сотрудник"
+    ADMIN = "admin"
+    MODERATOR = "moderator"
+    EMPLOYEE = "employee"
 
 
 @dataclass

@@ -16,7 +16,7 @@ class CreateEmployeeBody(BaseModel):
                 "organization_id": 1,
                 "invited_from_account_id": 1,
                 "name": "John Doe",
-                "role": "сотрудник"
+                "role": "employee"
             }
         }
 
