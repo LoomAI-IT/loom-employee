@@ -1,14 +1,14 @@
 create_employee = """
 INSERT INTO employees (
     organization_id,
-    invited_from_employee_id,
+    invited_from_account_id,
     account_id,
     name,
     role
 )
 VALUES (
     :organization_id,
-    :invited_from_employee_id,
+    :invited_from_account_id,
     :account_id,
     :name,
     :role

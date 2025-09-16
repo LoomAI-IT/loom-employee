@@ -57,7 +57,7 @@ class IEmployeeService(Protocol):
     async def create_employee(
             self,
             organization_id: int,
-            invited_from_employee_id: int,
+            invited_from_account_id: int,
             account_id: int,
             name: str,
             role: model.EmployeeRole
@@ -115,7 +115,7 @@ class IEmployeeRepo(Protocol):
     async def create_employee(
             self,
             organization_id: int,
-            invited_from_employee_id: int,
+            invited_from_account_id: int,
             account_id: int,
             name: str,
             role: model.EmployeeRole,

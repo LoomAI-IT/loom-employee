@@ -4,8 +4,9 @@ from internal.model.employee import EmployeeRole
 
 
 class CreateEmployeeBody(BaseModel):
+    account_id: int
     organization_id: int
-    invited_from_employee_id: int
+    invited_from_account_id: int
     name: str
     role: EmployeeRole
 
@@ -13,7 +14,7 @@ class CreateEmployeeBody(BaseModel):
         json_schema_extra = {
             "example": {
                 "organization_id": 1,
-                "invited_from_employee_id": 1,
+                "invited_from_account_id": 1,
                 "name": "John Doe",
                 "role": "сотрудник"
             }

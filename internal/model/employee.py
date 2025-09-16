@@ -15,7 +15,7 @@ class Employee:
     id: int
     organization_id: int
     account_id: int
-    invited_from_employee_id: int
+    invited_from_account_id: int
 
     required_moderation: bool
     autoposting_permission: bool
@@ -35,7 +35,7 @@ class Employee:
             cls(
                 id=row.id,
                 organization_id=row.organization_id,
-                invited_from_employee_id=row.invited_from_employee_id,
+                invited_from_account_id=row.invited_from_account_id,
                 account_id=row.account_id,
                 required_moderation=row.required_moderation,
                 autoposting_permission=row.autoposting_permission,
@@ -54,7 +54,7 @@ class Employee:
         return {
             "id": self.id,
             "organization_id": self.organization_id,
-            "invited_from_employee_id": self.invited_from_employee_id,
+            "invited_from_account_id": self.invited_from_account_id,
             "account_id": self.account_id,
             "required_moderation": self.required_moderation,
             "autoposting_permission": self.autoposting_permission,

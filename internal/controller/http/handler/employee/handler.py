@@ -33,29 +33,24 @@ class EmployeeController(interface.IEmployeeController):
                 }
         ) as span:
             try:
-                authorization_data = request.state.authorization_data
-                account_id = authorization_data.account_id
-
-                if account_id == 0:
-                    raise HTTPException(status_code=401, detail="Unauthorized")
 
                 self.logger.info("Create employee request", {
-                    "account_id": account_id,
+                    "account_id": body.account_id,
                     "organization_id": body.organization_id,
-                    "name": body.name,
+                    "employee_name": body.name,
                     "role": body.role.value
                 })
 
                 employee_id = await self.employee_service.create_employee(
                     organization_id=body.organization_id,
-                    invited_from_employee_id=body.invited_from_employee_id,
-                    account_id=account_id,
+                    invited_from_account_id=body.invited_from_account_id,
+                    account_id=body.account_id,
                     name=body.name,
                     role=body.role
                 )
 
                 self.logger.info("Employee created successfully", {
-                    "account_id": account_id,
+                    "account_id": body.account_id,
                     "employee_id": employee_id
                 })
 

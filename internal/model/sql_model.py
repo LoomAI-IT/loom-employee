@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS employees (
     id SERIAL PRIMARY KEY,
     organization_id INTEGER NOT NULL,
     
-    invited_from_employee_id INTEGER NOT NULL,
+    invited_from_account_id INTEGER NOT NULL,
     account_id INTEGER NOT NULL,
     
     required_moderation BOOLEAN DEFAULT FALSE,

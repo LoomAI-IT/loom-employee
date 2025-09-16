@@ -15,7 +15,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
     async def create_employee(
             self,
             organization_id: int,
-            invited_from_employee_id: int,
+            invited_from_account_id: int,
             account_id: int,
             name: str,
             role: model.EmployeeRole,
@@ -33,7 +33,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
             try:
                 args = {
                     'organization_id': organization_id,
-                    'invited_from_employee_id': invited_from_employee_id,
+                    'invited_from_account_id': invited_from_account_id,
                     'account_id': account_id,
                     'name': name,
                     'role': role.value,
