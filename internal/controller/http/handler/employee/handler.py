@@ -112,6 +112,35 @@ class EmployeeController(interface.IEmployeeController):
                 span.set_status(Status(StatusCode.ERROR, str(err)))
                 raise err
 
+
+    async def get_employee_by_account_id(self, request: Request, account_id: int) -> JSONResponse:
+        with self.tracer.start_as_current_span(
+                "EmployeeController.get_employee_by_account_id",
+                kind=SpanKind.INTERNAL,
+                attributes={"account_id": account_id}
+        ) as span:
+            try:
+                self.logger.info("Get employee by ID request", {
+                    "account_id": account_id,
+                })
+
+                employee = await self.employee_service.get_employee_by_account_id(account_id)
+
+                self.logger.info("Employee retrieved successfully", {
+                    "account_id": account_id,
+                })
+
+                span.set_status(Status(StatusCode.OK))
+                return JSONResponse(
+                    status_code=200,
+                    content=[employee.to_dict() for employee in employee]
+                )
+
+            except Exception as err:
+                span.record_exception(err)
+                span.set_status(Status(StatusCode.ERROR, str(err)))
+                raise err
+
     async def get_employees_by_organization(self, request: Request, organization_id: int) -> JSONResponse:
         with self.tracer.start_as_current_span(
                 "EmployeeController.get_employees_by_organization",

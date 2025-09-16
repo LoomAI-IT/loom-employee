@@ -44,7 +44,7 @@ def include_employee_handlers(
 ):
     # Создание сотрудника
     app.add_api_route(
-        prefix + "/employee",
+        prefix + "/create",
         employee_controller.create_employee,
         methods=["POST"],
         tags=["Employee"],
@@ -55,13 +55,23 @@ def include_employee_handlers(
 
     # Получение сотрудника по ID
     app.add_api_route(
-        prefix + "/employee/{employee_id}",
+        prefix + "/{employee_id}",
         employee_controller.get_employee_by_id,
         methods=["GET"],
         tags=["Employee"],
         response_model=model.Employee,
         summary="Получить сотрудника по ID",
         description="Возвращает информацию о сотруднике по его идентификатору"
+    )
+
+    app.add_api_route(
+        prefix + "/account/{account_id}",
+        employee_controller.get_employee_by_account_id,
+        methods=["GET"],
+        tags=["Employee"],
+        response_model=model.Employee,
+        summary="Получить сотрудника по account ID",
+        description="Возвращает информацию о сотруднике по account_id идентификатору"
     )
 
     # Получение сотрудников по организации
@@ -77,7 +87,7 @@ def include_employee_handlers(
 
     # Обновление прав сотрудника
     app.add_api_route(
-        prefix + "/employee/permissions",
+        prefix + "/permissions",
         employee_controller.update_employee_permissions,
         methods=["PUT"],
         tags=["Employee"],
@@ -88,7 +98,7 @@ def include_employee_handlers(
 
     # Обновление роли сотрудника
     app.add_api_route(
-        prefix + "/employee/role",
+        prefix + "/role",
         employee_controller.update_employee_role,
         methods=["PUT"],
         tags=["Employee"],
@@ -99,7 +109,7 @@ def include_employee_handlers(
 
     # Удаление сотрудника
     app.add_api_route(
-        prefix + "/employee/{employee_id}",
+        prefix + "/{employee_id}",
         employee_controller.delete_employee,
         methods=["DELETE"],
         tags=["Employee"],

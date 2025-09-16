@@ -24,6 +24,10 @@ class IEmployeeController(Protocol):
         pass
 
     @abstractmethod
+    async def get_employee_by_account_id(self, request: Request, account_idd: int) -> JSONResponse:
+        pass
+
+    @abstractmethod
     async def get_employees_by_organization(self, request: Request, organization_id: int) -> JSONResponse:
         pass
 
@@ -62,6 +66,10 @@ class IEmployeeService(Protocol):
 
     @abstractmethod
     async def get_employee_by_id(self, employee_id: int) -> model.Employee:
+        pass
+
+    @abstractmethod
+    async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         pass
 
     @abstractmethod

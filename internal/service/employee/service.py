@@ -74,6 +74,24 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.ERROR, str(e)))
                 raise
 
+
+    async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
+        with self.tracer.start_as_current_span(
+                "EmployeeService.get_employee_by_account_id",
+                kind=SpanKind.INTERNAL,
+                attributes={"account_id": account_id}
+        ) as span:
+            try:
+                employee = await self.employee_repo.get_employee_by_account_id(account_id)
+
+                span.set_status(Status(StatusCode.OK))
+                return employee
+
+            except Exception as e:
+                span.record_exception(e)
+                span.set_status(Status(StatusCode.ERROR, str(e)))
+                raise
+
     async def get_employees_by_organization(self, organization_id: int) -> list[model.Employee]:
         with self.tracer.start_as_current_span(
                 "EmployeeService.get_employees_by_organization",
