@@ -53,17 +53,6 @@ def include_employee_handlers(
         description="Создает нового сотрудника в организации"
     )
 
-    # Получение сотрудника по ID
-    app.add_api_route(
-        prefix + "/{employee_id}",
-        employee_controller.get_employee_by_id,
-        methods=["GET"],
-        tags=["Employee"],
-        response_model=model.Employee,
-        summary="Получить сотрудника по ID",
-        description="Возвращает информацию о сотруднике по его идентификатору"
-    )
-
     app.add_api_route(
         prefix + "/account/{account_id}",
         employee_controller.get_employee_by_account_id,

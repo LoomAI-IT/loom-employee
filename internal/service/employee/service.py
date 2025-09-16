@@ -53,27 +53,6 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.ERROR, str(e)))
                 raise
 
-    async def get_employee_by_id(self, employee_id: int) -> model.Employee:
-        with self.tracer.start_as_current_span(
-                "EmployeeService.get_employee_by_id",
-                kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
-        ) as span:
-            try:
-                employees = await self.employee_repo.get_employee_by_id(employee_id)
-                if not employees:
-                    raise common.ErrEmployeeNotFound()
-
-                employee = employees[0]
-
-                span.set_status(Status(StatusCode.OK))
-                return employee
-
-            except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
-                raise
-
 
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         with self.tracer.start_as_current_span(
@@ -111,7 +90,7 @@ class EmployeeService(interface.IEmployeeService):
 
     async def update_employee_permissions(
             self,
-            employee_id: int,
+            account_id: int,
             required_moderation: bool = None,
             autoposting_permission: bool = None,
             add_employee_permission: bool = None,
@@ -122,16 +101,16 @@ class EmployeeService(interface.IEmployeeService):
         with self.tracer.start_as_current_span(
                 "EmployeeService.update_employee_permissions",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
+                attributes={"account_id": account_id}
         ) as span:
             try:
                 # Проверяем, что сотрудник существует
-                employees = await self.employee_repo.get_employee_by_id(employee_id)
+                employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
                     raise common.ErrEmployeeNotFound()
 
                 await self.employee_repo.update_employee_permissions(
-                    employee_id=employee_id,
+                    account_id=account_id,
                     required_moderation=required_moderation,
                     autoposting_permission=autoposting_permission,
                     add_employee_permission=add_employee_permission,
@@ -149,22 +128,22 @@ class EmployeeService(interface.IEmployeeService):
 
     async def update_employee_role(
             self,
-            employee_id: int,
+            account_id: int,
             role: model.EmployeeRole
     ) -> None:
         with self.tracer.start_as_current_span(
                 "EmployeeService.update_employee_role",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id, "role": role.value}
+                attributes={"account_id": account_id, "role": role.value}
         ) as span:
             try:
                 # Проверяем, что сотрудник существует
-                employees = await self.employee_repo.get_employee_by_id(employee_id)
+                employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
                     raise common.ErrEmployeeNotFound()
 
                 await self.employee_repo.update_employee_role(
-                    employee_id=employee_id,
+                    account_id=account_id,
                     role=role
                 )
 
@@ -175,19 +154,19 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.ERROR, str(e)))
                 raise
 
-    async def delete_employee(self, employee_id: int) -> None:
+    async def delete_employee(self, account_id: int) -> None:
         with self.tracer.start_as_current_span(
                 "EmployeeService.delete_employee",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
+                attributes={"account_id": account_id}
         ) as span:
             try:
                 # Проверяем, что сотрудник существует
-                employees = await self.employee_repo.get_employee_by_id(employee_id)
+                employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
                     raise common.ErrEmployeeNotFound()
 
-                await self.employee_repo.delete_employee(employee_id)
+                await self.employee_repo.delete_employee(account_id)
 
                 span.set_status(Status(StatusCode.OK))
 
@@ -198,16 +177,16 @@ class EmployeeService(interface.IEmployeeService):
 
     async def check_employee_permission(
             self,
-            employee_id: int,
+            account_id: int,
             permission_type: str
     ) -> bool:
         with self.tracer.start_as_current_span(
                 "EmployeeService.check_employee_permission",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id, "permission_type": permission_type}
+                attributes={"account_id": account_id, "permission_type": permission_type}
         ) as span:
             try:
-                return await self._check_employee_permission(employee_id, permission_type)
+                return await self._check_employee_permission(account_id, permission_type)
 
             except Exception as e:
                 span.record_exception(e)
@@ -216,11 +195,11 @@ class EmployeeService(interface.IEmployeeService):
 
     async def _check_employee_permission(
             self,
-            employee_id: int,
+            account_id: int,
             permission_type: str
     ) -> bool:
         """Внутренний метод для проверки разрешений"""
-        employees = await self.employee_repo.get_employee_by_id(employee_id)
+        employees = await self.employee_repo.get_employee_by_account_id(account_id)
         if not employees:
             raise common.ErrEmployeeNotFound()
 
@@ -243,6 +222,6 @@ class EmployeeService(interface.IEmployeeService):
         has_permission = permission_map.get(permission_type, False)
 
         if not has_permission:
-            raise common.ErrInsufficientPermissions(f"Employee {employee_id} lacks permission: {permission_type}")
+            raise common.ErrInsufficientPermissions(f"Employee {account_id} lacks permission: {permission_type}")
 
         return True

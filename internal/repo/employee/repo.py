@@ -32,6 +32,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
         ) as span:
             try:
                 args = {
+                    'id': account_id,
                     'organization_id': organization_id,
                     'invited_from_account_id': invited_from_account_id,
                     'account_id': account_id,
@@ -43,24 +44,6 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
                 span.set_status(Status(StatusCode.OK))
                 return employee_id
-            except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
-                raise err
-
-    async def get_employee_by_id(self, employee_id: int) -> list[model.Employee]:
-        with self.tracer.start_as_current_span(
-                "EmployeeRepo.get_employee_by_id",
-                kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
-        ) as span:
-            try:
-                args = {'employee_id': employee_id}
-                rows = await self.db.select(get_employee_by_id, args)
-                employees = model.Employee.serialize(rows) if rows else []
-
-                span.set_status(Status(StatusCode.OK))
-                return employees
             except Exception as err:
                 span.record_exception(err)
                 span.set_status(Status(StatusCode.ERROR, str(err)))
@@ -104,7 +87,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
     async def update_employee_permissions(
             self,
-            employee_id: int,
+            account_id: int,
             required_moderation: bool = None,
             autoposting_permission: bool = None,
             add_employee_permission: bool = None,
@@ -115,12 +98,12 @@ class EmployeeRepo(interface.IEmployeeRepo):
         with self.tracer.start_as_current_span(
                 "EmployeeRepo.update_employee_permissions",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
+                attributes={"account_id": account_id}
         ) as span:
             try:
                 # Формируем запрос динамически в зависимости от переданных параметров
                 update_fields = []
-                args: dict = {'employee_id': employee_id}
+                args: dict = {'account_id': account_id}
 
                 if required_moderation is not None:
                     update_fields.append("required_moderation = :required_moderation")
@@ -168,17 +151,17 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
     async def update_employee_role(
             self,
-            employee_id: int,
+            account_id: int,
             role: model.EmployeeRole
     ) -> None:
         with self.tracer.start_as_current_span(
                 "EmployeeRepo.update_employee_role",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id, "role": role.value}
+                attributes={"account_id": account_id, "role": role.value}
         ) as span:
             try:
                 args = {
-                    'employee_id': employee_id,
+                    'account_id': account_id,
                     'role': role.value
                 }
                 await self.db.update(update_employee_role, args)
@@ -189,14 +172,14 @@ class EmployeeRepo(interface.IEmployeeRepo):
                 span.set_status(Status(StatusCode.ERROR, str(err)))
                 raise err
 
-    async def delete_employee(self, employee_id: int) -> None:
+    async def delete_employee(self, account_id: int) -> None:
         with self.tracer.start_as_current_span(
                 "EmployeeRepo.delete_employee",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
+                attributes={"account_id": account_id}
         ) as span:
             try:
-                args = {'employee_id': employee_id}
+                args = {'account_id': account_id}
                 await self.db.update(delete_employee, args)
 
                 span.set_status(Status(StatusCode.OK))

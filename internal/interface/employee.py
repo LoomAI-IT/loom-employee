@@ -20,10 +20,6 @@ class IEmployeeController(Protocol):
         pass
 
     @abstractmethod
-    async def get_employee_by_id(self, request: Request, employee_id: int) -> JSONResponse:
-        pass
-
-    @abstractmethod
     async def get_employee_by_account_id(self, request: Request, account_idd: int) -> JSONResponse:
         pass
 
@@ -48,7 +44,7 @@ class IEmployeeController(Protocol):
         pass
 
     @abstractmethod
-    async def delete_employee(self, request: Request, employee_id: int) -> JSONResponse:
+    async def delete_employee(self, request: Request, account_id: int) -> JSONResponse:
         pass
 
 
@@ -65,10 +61,6 @@ class IEmployeeService(Protocol):
         pass
 
     @abstractmethod
-    async def get_employee_by_id(self, employee_id: int) -> model.Employee:
-        pass
-
-    @abstractmethod
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         pass
 
@@ -79,7 +71,7 @@ class IEmployeeService(Protocol):
     @abstractmethod
     async def update_employee_permissions(
             self,
-            employee_id: int,
+            account_id: int,
             required_moderation: bool = None,
             autoposting_permission: bool = None,
             add_employee_permission: bool = None,
@@ -92,19 +84,19 @@ class IEmployeeService(Protocol):
     @abstractmethod
     async def update_employee_role(
             self,
-            employee_id: int,
+            account_id: int,
             role: model.EmployeeRole
     ) -> None:
         pass
 
     @abstractmethod
-    async def delete_employee(self, employee_id: int) -> None:
+    async def delete_employee(self, account_id: int) -> None:
         pass
 
     @abstractmethod
     async def check_employee_permission(
             self,
-            employee_id: int,
+            account_id: int,
             permission_type: str
     ) -> bool:
         pass
@@ -123,10 +115,6 @@ class IEmployeeRepo(Protocol):
         pass
 
     @abstractmethod
-    async def get_employee_by_id(self, employee_id: int) -> list[model.Employee]:
-        pass
-
-    @abstractmethod
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         pass
 
@@ -137,7 +125,7 @@ class IEmployeeRepo(Protocol):
     @abstractmethod
     async def update_employee_permissions(
             self,
-            employee_id: int,
+            account_id: int,
             required_moderation: bool = None,
             autoposting_permission: bool = None,
             add_employee_permission: bool = None,
@@ -150,11 +138,11 @@ class IEmployeeRepo(Protocol):
     @abstractmethod
     async def update_employee_role(
             self,
-            employee_id: int,
+            account_id: int,
             role: model.EmployeeRole
     ) -> None:
         pass
 
     @abstractmethod
-    async def delete_employee(self, employee_id: int) -> None:
+    async def delete_employee(self, account_id: int) -> None:
         pass

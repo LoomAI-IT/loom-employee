@@ -1,5 +1,6 @@
 create_employee = """
 INSERT INTO employees (
+    id,
     organization_id,
     invited_from_account_id,
     account_id,
@@ -7,6 +8,7 @@ INSERT INTO employees (
     role
 )
 VALUES (
+    :id,
     :organization_id,
     :invited_from_account_id,
     :account_id,
@@ -18,7 +20,7 @@ RETURNING id;
 
 get_employee_by_id = """
 SELECT * FROM employees
-WHERE id = :employee_id;
+WHERE account_id = :account_id;
 """
 
 get_employee_by_account_id = """
@@ -35,10 +37,10 @@ ORDER BY created_at DESC;
 update_employee_role = """
 UPDATE employees 
 SET role = :role
-WHERE id = :employee_id;
+WHERE account_id = :account_id;
 """
 
 delete_employee = """
 DELETE FROM employees
-WHERE id = :employee_id;
+WHERE account_id = :account_id;
 """

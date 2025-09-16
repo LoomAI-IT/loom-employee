@@ -22,7 +22,7 @@ class CreateEmployeeBody(BaseModel):
 
 
 class UpdateEmployeePermissionsBody(BaseModel):
-    employee_id: int
+    account_id: int
     required_moderation: Optional[bool] = None
     autoposting_permission: Optional[bool] = None
     add_employee_permission: Optional[bool] = None
@@ -33,7 +33,7 @@ class UpdateEmployeePermissionsBody(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "employee_id": 1,
+                "account_id": 1,
                 "required_moderation": False,
                 "autoposting_permission": True,
                 "add_employee_permission": False,
@@ -45,13 +45,13 @@ class UpdateEmployeePermissionsBody(BaseModel):
 
 
 class UpdateEmployeeRoleBody(BaseModel):
-    employee_id: int
+    account_id: int
     role: EmployeeRole
 
     class Config:
         json_schema_extra = {
             "example": {
-                "employee_id": 1,
+                "account_id": 1,
                 "role": "модератор"
             }
         }
