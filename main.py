@@ -4,6 +4,7 @@ from infrastructure.pg.pg import PG
 from infrastructure.telemetry.telemetry import Telemetry, AlertManager
 
 from pkg.client.internal.kontur_authorization.client import KonturAuthorizationClient
+from pkg.client.internal.kontur_tg_bot.client import KonturTgBotClient
 
 from internal.controller.http.middlerware.middleware import HttpMiddleware
 from internal.controller.http.handler.employee.handler import EmployeeController
@@ -50,6 +51,13 @@ kontur_authorization_client = KonturAuthorizationClient(
     port=cfg.kontur_authorization_port,
 )
 
+kontur_tg_bot_client = KonturTgBotClient(
+    tel=tel,
+    host=cfg.kontur_tg_bot_host,
+    port=cfg.kontur_tg_bot_port,
+    interserver_secret_key=cfg.interserver_secret_key
+)
+
 # Инициализация репозиториев
 employee_repo = EmployeeRepo(tel, db)
 
@@ -57,6 +65,7 @@ employee_repo = EmployeeRepo(tel, db)
 employee_service = EmployeeService(
     tel=tel,
     employee_repo=employee_repo,
+    kontur_tg_bot_client=kontur_tg_bot_client
 )
 
 # Инициализация контроллеров

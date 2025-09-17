@@ -12,6 +12,8 @@ class Config:
         self.prefix = os.getenv("KONTUR_EMPLOYEE_PREFIX", "/api/employee")
         self.log_level = os.getenv("LOG_LEVEL", "INFO")
 
+        self.interserver_secret_key = os.getenv("INTERSERVER_SECRET_KEY")
+
         # Database configuration
         self.db_host = os.getenv("KONTUR_EMPLOYEE_POSTGRES_CONTAINER_NAME", "localhost")
         self.db_port = "5432"
@@ -39,3 +41,6 @@ class Config:
         # External services configuration
         self.kontur_authorization_host = os.getenv("KONTUR_AUTHORIZATION_CONTAINER_NAME", "localhost")
         self.kontur_authorization_port = int(os.getenv("KONTUR_AUTHORIZATION_PORT", "8081"))
+
+        self.kontur_tg_bot_host = os.getenv("KONTUR_TG_BOT_CONTAINER_NAME", "localhost")
+        self.kontur_tg_bot_port = int(os.getenv("KONTUR_TG_BOT_PORT", "8081"))
