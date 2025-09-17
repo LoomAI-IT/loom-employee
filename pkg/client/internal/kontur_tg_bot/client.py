@@ -33,7 +33,7 @@ class KonturTgBotClient(interface.IKonturTgBotClient):
             role: str,
     ):
         with self.tracer.start_as_current_span(
-                "KonturAuthorizationClient.authorization",
+                "KonturTgBotClient.notify_employee_added",
                 kind=SpanKind.CLIENT,
                 attributes={
                     "account_id": account_id,
@@ -50,6 +50,7 @@ class KonturTgBotClient(interface.IKonturTgBotClient):
                     "role": role,
                     "interserver_secret_key": self.interserver_secret_key,
                 }
+                print(body, flush=True)
                 response = await self.client.post("/employee/notify/added", json=body)
 
                 span.set_status(Status(StatusCode.OK))
