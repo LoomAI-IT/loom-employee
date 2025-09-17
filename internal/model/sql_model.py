@@ -1,7 +1,7 @@
 
 create_employees_table = """
 CREATE TABLE IF NOT EXISTS employees (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     organization_id INTEGER NOT NULL,
     
     invited_from_account_id INTEGER NOT NULL,
