@@ -50,7 +50,6 @@ class KonturTgBotClient(interface.IKonturTgBotClient):
                     "role": role,
                     "interserver_secret_key": self.interserver_secret_key,
                 }
-                print(body, flush=True)
                 response = await self.client.post("/employee/notify/added", json=body)
 
                 span.set_status(Status(StatusCode.OK))
