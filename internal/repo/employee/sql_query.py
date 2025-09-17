@@ -5,7 +5,13 @@ INSERT INTO employees (
     invited_from_account_id,
     account_id,
     name,
-    role
+    role,
+    required_moderation,
+    autoposting_permission,
+    add_employee_permission,
+    edit_employee_perm_permission,
+    top_up_balance_permission,
+    sign_up_social_net_permission
 )
 VALUES (
     :id,
@@ -13,7 +19,13 @@ VALUES (
     :invited_from_account_id,
     :account_id,
     :name,
-    :role
+    :role,
+    :required_moderation,
+    :autoposting_permission,
+    :add_employee_permission,
+    :edit_employee_perm_permission,
+    :top_up_balance_permission,
+    :sign_up_social_net_permission
 )
 RETURNING id;
 """

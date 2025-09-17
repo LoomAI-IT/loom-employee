@@ -18,7 +18,13 @@ class EmployeeRepo(interface.IEmployeeRepo):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: str
+            role: str,
+            required_moderation: bool = False,
+            autoposting_permission: bool = False,
+            add_employee_permission: bool = False,
+            edit_employee_perm_permission: bool = False,
+            top_up_balance_permission: bool = False,
+            sign_up_social_net_permission: bool = False,
     ) -> int:
         with self.tracer.start_as_current_span(
                 "EmployeeRepo.create_employee",
@@ -37,7 +43,13 @@ class EmployeeRepo(interface.IEmployeeRepo):
                     'invited_from_account_id': invited_from_account_id,
                     'account_id': account_id,
                     'name': name,
-                    'role': role
+                    'role': role,
+                    'required_moderation': required_moderation,
+                    'autoposting_permission': autoposting_permission,
+                    'add_employee_permission': add_employee_permission,
+                    'edit_employee_perm_permission': edit_employee_perm_permission,
+                    'top_up_balance_permission': top_up_balance_permission,
+                    'sign_up_social_net_permission': sign_up_social_net_permission,
                 }
 
                 employee_id = await self.db.insert(create_employee, args)

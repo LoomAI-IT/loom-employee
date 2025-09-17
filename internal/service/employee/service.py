@@ -2,8 +2,6 @@ from opentelemetry.trace import Status, StatusCode, SpanKind
 from internal import interface, model, common
 
 
-
-
 class EmployeeService(interface.IEmployeeService):
     def __init__(
             self,
@@ -37,12 +35,33 @@ class EmployeeService(interface.IEmployeeService):
                 if invited_from_account_id != 0:  # 0 означает создание первого админа
                     await self._check_employee_permission(invited_from_account_id, "add_employee_permission")
 
+                required_moderation = False
+                autoposting_permission = False
+                add_employee_permission = False
+                edit_employee_perm_permission = False
+                top_up_balance_permission = False
+                sign_up_social_net_permission = False
+
+                if role == "admin":
+                    required_moderation = True
+                    autoposting_permission = True
+                    add_employee_permission = True
+                    edit_employee_perm_permission = True
+                    top_up_balance_permission = True
+                    sign_up_social_net_permission = True
+
                 employee_id = await self.employee_repo.create_employee(
                     organization_id=organization_id,
                     invited_from_account_id=invited_from_account_id,
                     account_id=account_id,
                     name=name,
-                    role=role
+                    role=role,
+                    required_moderation=required_moderation,
+                    autoposting_permission=autoposting_permission,
+                    add_employee_permission=add_employee_permission,
+                    edit_employee_perm_permission=edit_employee_perm_permission,
+                    top_up_balance_permission=top_up_balance_permission,
+                    sign_up_social_net_permission=sign_up_social_net_permission,
                 )
 
                 span.set_status(Status(StatusCode.OK))
@@ -52,7 +71,6 @@ class EmployeeService(interface.IEmployeeService):
                 span.record_exception(e)
                 span.set_status(Status(StatusCode.ERROR, str(e)))
                 raise
-
 
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
         with self.tracer.start_as_current_span(

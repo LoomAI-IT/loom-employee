@@ -110,7 +110,13 @@ class IEmployeeRepo(Protocol):
             invited_from_account_id: int,
             account_id: int,
             name: str,
-            role: str
+            role: str,
+            required_moderation: bool = False,
+            autoposting_permission: bool = False,
+            add_employee_permission: bool = False,
+            edit_employee_perm_permission: bool = False,
+            top_up_balance_permission: bool = False,
+            sign_up_social_net_permission: bool = False,
     ) -> int:
         pass
 
