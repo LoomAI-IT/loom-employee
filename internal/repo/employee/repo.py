@@ -149,7 +149,7 @@ class EmployeeRepo(interface.IEmployeeRepo):
                 query = f"""
                 UPDATE employees 
                 SET {', '.join(update_fields)}
-                WHERE id = :employee_id;
+                WHERE account_id = :account_id;
                 """
 
                 await self.db.update(query, args)
