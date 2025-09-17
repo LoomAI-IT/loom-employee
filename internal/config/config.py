@@ -12,7 +12,7 @@ class Config:
         self.prefix = os.getenv("KONTUR_EMPLOYEE_PREFIX", "/api/employee")
         self.log_level = os.getenv("LOG_LEVEL", "INFO")
 
-        self.interserver_secret_key = os.getenv("INTERSERVER_SECRET_KEY")
+        self.interserver_secret_key = os.getenv("KONTUR_INTERSERVER_SECRET_KEY")
 
         # Database configuration
         self.db_host = os.getenv("KONTUR_EMPLOYEE_POSTGRES_CONTAINER_NAME", "localhost")
