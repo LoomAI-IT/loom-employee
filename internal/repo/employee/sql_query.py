@@ -1,6 +1,5 @@
 create_employee = """
 INSERT INTO employees (
-    id,
     organization_id,
     invited_from_account_id,
     account_id,
@@ -14,7 +13,6 @@ INSERT INTO employees (
     sign_up_social_net_permission
 )
 VALUES (
-    :id,
     :organization_id,
     :invited_from_account_id,
     :account_id,

@@ -38,7 +38,6 @@ class EmployeeRepo(interface.IEmployeeRepo):
         ) as span:
             try:
                 args = {
-                    'id': account_id,
                     'organization_id': organization_id,
                     'invited_from_account_id': invited_from_account_id,
                     'account_id': account_id,
