@@ -1,5 +1,5 @@
 from opentelemetry.trace import Status, StatusCode, SpanKind
-from fastapi import Request, HTTPException
+from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from internal import interface
@@ -67,38 +67,6 @@ class EmployeeController(interface.IEmployeeController):
                 span.record_exception(err)
                 span.set_status(Status(StatusCode.ERROR, str(err)))
                 raise err
-
-    async def get_employee_by_id(self, request: Request, employee_id: int) -> JSONResponse:
-        with self.tracer.start_as_current_span(
-                "EmployeeController.get_employee_by_id",
-                kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
-        ) as span:
-            try:
-                self.logger.info("Get employee by ID request", {
-                    "employee_id": employee_id
-                })
-
-                employee = await self.employee_service.get_employee_by_id(employee_id)
-
-                self.logger.info("Employee retrieved successfully", {
-                    "employee_id": employee_id
-                })
-
-                span.set_status(Status(StatusCode.OK))
-                return JSONResponse(
-                    status_code=200,
-                    content={
-                        "message": "Employee retrieved successfully",
-                        "employee": employee.to_dict()
-                    }
-                )
-
-            except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
-                raise err
-
 
     async def get_employee_by_account_id(self, request: Request, account_id: int) -> JSONResponse:
         with self.tracer.start_as_current_span(
@@ -169,16 +137,16 @@ class EmployeeController(interface.IEmployeeController):
         with self.tracer.start_as_current_span(
                 "EmployeeController.update_employee_permissions",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": body.employee_id}
+                attributes={"account_id": body.account_id}
         ) as span:
             try:
 
                 self.logger.info("Update employee permissions request", {
-                    "employee_id": body.employee_id
+                    "account_id": body.account_id
                 })
 
                 await self.employee_service.update_employee_permissions(
-                    employee_id=body.employee_id,
+                    account_id=body.account_id,
                     required_moderation=body.required_moderation,
                     autoposting_permission=body.autoposting_permission,
                     add_employee_permission=body.add_employee_permission,
@@ -188,7 +156,7 @@ class EmployeeController(interface.IEmployeeController):
                 )
 
                 self.logger.info("Employee permissions updated successfully", {
-                    "employee_id": body.employee_id
+                    "account_id": body.account_id
                 })
 
                 span.set_status(Status(StatusCode.OK))
@@ -210,22 +178,22 @@ class EmployeeController(interface.IEmployeeController):
         with self.tracer.start_as_current_span(
                 "EmployeeController.update_employee_role",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": body.employee_id, "role": body.role.value}
+                attributes={"account_id": body.account_id, "role": body.role.value}
         ) as span:
             try:
 
                 self.logger.info("Update employee role request", {
-                    "employee_id": body.employee_id,
+                    "account_id": body.account_id,
                     "role": body.role.value
                 })
 
                 await self.employee_service.update_employee_role(
-                    employee_id=body.employee_id,
+                    account_id=body.account_id,
                     role=body.role
                 )
 
                 self.logger.info("Employee role updated successfully", {
-                    "employee_id": body.employee_id,
+                    "account_id": body.account_id,
                     "role": body.role.value
                 })
 
@@ -240,21 +208,21 @@ class EmployeeController(interface.IEmployeeController):
                 span.set_status(Status(StatusCode.ERROR, str(err)))
                 raise err
 
-    async def delete_employee(self, request: Request, employee_id: int) -> JSONResponse:
+    async def delete_employee(self, request: Request, account_id: int) -> JSONResponse:
         with self.tracer.start_as_current_span(
                 "EmployeeController.delete_employee",
                 kind=SpanKind.INTERNAL,
-                attributes={"employee_id": employee_id}
+                attributes={"account_id": account_id}
         ) as span:
             try:
                 self.logger.info("Delete employee request", {
-                    "employee_id": employee_id
+                    "account_id": account_id
                 })
 
-                await self.employee_service.delete_employee(employee_id)
+                await self.employee_service.delete_employee(account_id)
 
                 self.logger.info("Employee deleted successfully", {
-                    "employee_id": employee_id
+                    "account_id": account_id
                 })
 
                 span.set_status(Status(StatusCode.OK))

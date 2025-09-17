@@ -98,7 +98,7 @@ def include_employee_handlers(
 
     # Удаление сотрудника
     app.add_api_route(
-        prefix + "/{employee_id}",
+        prefix + "/{account_id}",
         employee_controller.delete_employee,
         methods=["DELETE"],
         tags=["Employee"],
