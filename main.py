@@ -3,8 +3,8 @@ import uvicorn
 from infrastructure.pg.pg import PG
 from infrastructure.telemetry.telemetry import Telemetry, AlertManager
 
-from pkg.client.internal.kontur_authorization.client import KonturAuthorizationClient
-from pkg.client.internal.kontur_tg_bot.client import KonturTgBotClient
+from pkg.client.internal.loom_authorization.client import LoomAuthorizationClient
+from pkg.client.internal.loom_tg_bot.client import LoomTgBotClient
 
 from internal.controller.http.middlerware.middleware import HttpMiddleware
 from internal.controller.http.handler.employee.handler import EmployeeController
@@ -45,16 +45,16 @@ tel = Telemetry(
 db = PG(tel, cfg.db_user, cfg.db_pass, cfg.db_host, cfg.db_port, cfg.db_name)
 
 # Инициализация внешних клиентов
-kontur_authorization_client = KonturAuthorizationClient(
+loom_authorization_client = LoomAuthorizationClient(
     tel=tel,
-    host=cfg.kontur_authorization_host,
-    port=cfg.kontur_authorization_port,
+    host=cfg.loom_authorization_host,
+    port=cfg.loom_authorization_port,
 )
 
-kontur_tg_bot_client = KonturTgBotClient(
+loom_tg_bot_client = LoomTgBotClient(
     tel=tel,
-    host=cfg.kontur_tg_bot_host,
-    port=cfg.kontur_tg_bot_port,
+    host=cfg.loom_tg_bot_host,
+    port=cfg.loom_tg_bot_port,
     interserver_secret_key=cfg.interserver_secret_key
 )
 
@@ -65,14 +65,14 @@ employee_repo = EmployeeRepo(tel, db)
 employee_service = EmployeeService(
     tel=tel,
     employee_repo=employee_repo,
-    kontur_tg_bot_client=kontur_tg_bot_client
+    loom_tg_bot_client=loom_tg_bot_client
 )
 
 # Инициализация контроллеров
 employee_controller = EmployeeController(tel, employee_service)
 
 # Инициализация middleware
-http_middleware = HttpMiddleware(tel, kontur_authorization_client, cfg.prefix)
+http_middleware = HttpMiddleware(tel, loom_authorization_client, cfg.prefix)
 
 if __name__ == "__main__":
     app = NewHTTP(

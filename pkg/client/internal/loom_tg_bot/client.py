@@ -5,7 +5,7 @@ from internal import interface
 from pkg.client.client import AsyncHTTPClient
 
 
-class KonturTgBotClient(interface.IKonturTgBotClient):
+class LoomTgBotClient(interface.ILoomTgBotClient):
     def __init__(
             self,
             tel: interface.ITelemetry,
@@ -33,7 +33,7 @@ class KonturTgBotClient(interface.IKonturTgBotClient):
             role: str,
     ):
         with self.tracer.start_as_current_span(
-                "KonturTgBotClient.notify_employee_added",
+                "LoomTgBotClient.notify_employee_added",
                 kind=SpanKind.CLIENT,
                 attributes={
                     "account_id": account_id,

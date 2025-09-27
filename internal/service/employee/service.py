@@ -1,6 +1,6 @@
 from opentelemetry.trace import Status, StatusCode, SpanKind
 from internal import interface, model, common
-from internal.interface.client.kontur_tg_bot import IKonturTgBotClient
+from internal.interface.client.loom_tg_bot import ILoomTgBotClient
 
 
 class EmployeeService(interface.IEmployeeService):
@@ -8,12 +8,12 @@ class EmployeeService(interface.IEmployeeService):
             self,
             tel: interface.ITelemetry,
             employee_repo: interface.IEmployeeRepo,
-            kontur_tg_bot_client: IKonturTgBotClient,
+            loom_tg_bot_client: ILoomTgBotClient,
     ):
         self.tracer = tel.tracer()
         self.logger = tel.logger()
         self.employee_repo = employee_repo
-        self.kontur_tg_bot_client = kontur_tg_bot_client
+        self.loom_tg_bot_client = loom_tg_bot_client
 
     async def create_employee(
             self,
@@ -67,7 +67,7 @@ class EmployeeService(interface.IEmployeeService):
                     sign_up_social_net_permission=sign_up_social_net_permission,
                 )
 
-                await self.kontur_tg_bot_client.notify_employee_added(
+                await self.loom_tg_bot_client.notify_employee_added(
                     account_id=account_id,
                     organization_id=organization_id,
                     employee_name=name,
