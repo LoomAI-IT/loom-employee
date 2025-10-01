@@ -30,6 +30,6 @@ create_organization_tables_queries = [
     create_employees_table,
 ]
 
-drop_organization_tables_queries = [
+drop_queries = [
     drop_employees_table,
 ]

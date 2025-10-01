@@ -3,8 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class StatusCode:
-    CodeErrAccessTokenExpired = 4012
-    CodeErrAccessTokenInvalid = 4013
+    CodeErrAccessToken = 403
 
 
 TRACE_ID_KEY = "trace_id"
