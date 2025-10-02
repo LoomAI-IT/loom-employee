@@ -72,12 +72,6 @@ class HttpMiddleware(interface.IHttpMiddleware):
                         root_span.set_status(Status(StatusCode.ERROR, str(err)))
                         root_span.set_attribute(common.ERROR_KEY, True)
                         raise err
-                    elif status_code >= 400:
-                        err = Exception("Client error")
-                        root_span.record_exception(err)
-                        root_span.set_status(Status(StatusCode.ERROR, str(err)))
-                        root_span.set_attribute(common.ERROR_KEY, True)
-                        raise err
                     else:
                         root_span.set_status(Status(StatusCode.OK))
 
