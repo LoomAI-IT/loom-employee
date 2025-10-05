@@ -56,8 +56,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
                 span.set_status(Status(StatusCode.OK))
                 return employee_id
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
@@ -74,8 +74,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
                 span.set_status(Status(StatusCode.OK))
                 return employees
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def get_employees_by_organization(self, organization_id: int) -> list[model.Employee]:
@@ -92,8 +92,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
                 span.set_status(Status(StatusCode.OK))
                 return employees
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def update_employee_permissions(
@@ -156,8 +156,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
                 span.set_status(Status(StatusCode.OK))
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def update_employee_role(
@@ -179,8 +179,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
                 span.set_status(Status(StatusCode.OK))
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def delete_employee(self, account_id: int) -> None:
@@ -195,6 +195,6 @@ class EmployeeRepo(interface.IEmployeeRepo):
 
                 span.set_status(Status(StatusCode.OK))
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+                
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err

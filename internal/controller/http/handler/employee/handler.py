@@ -34,12 +34,7 @@ class EmployeeController(interface.IEmployeeController):
         ) as span:
             try:
 
-                self.logger.info("Create employee request", {
-                    "account_id": body.account_id,
-                    "organization_id": body.organization_id,
-                    "employee_name": body.name,
-                    "role": body.role
-                })
+                self.logger.info("Начало создания сотрудника")
 
                 employee_id = await self.employee_service.create_employee(
                     organization_id=body.organization_id,
@@ -49,23 +44,17 @@ class EmployeeController(interface.IEmployeeController):
                     role=body.role
                 )
 
-                self.logger.info("Employee created successfully", {
-                    "account_id": body.account_id,
-                    "employee_id": employee_id
-                })
+                self.logger.info("Создание сотрудника завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
                     status_code=201,
-                    content={
-                        "message": "Employee created successfully",
-                        "employee_id": employee_id
-                    }
+                    content={"employee_id": employee_id}
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def get_employee_by_account_id(self, request: Request, account_id: int) -> JSONResponse:
@@ -75,15 +64,11 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"account_id": account_id}
         ) as span:
             try:
-                self.logger.info("Get employee by ID request", {
-                    "account_id": account_id,
-                })
+                self.logger.info("Начало получения сотрудника по ID аккаунта")
 
                 employee = await self.employee_service.get_employee_by_account_id(account_id)
 
-                self.logger.info("Employee retrieved successfully", {
-                    "account_id": account_id,
-                })
+                self.logger.info("Получение сотрудника завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
@@ -92,8 +77,8 @@ class EmployeeController(interface.IEmployeeController):
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def get_employees_by_organization(self, request: Request, organization_id: int) -> JSONResponse:
@@ -104,29 +89,21 @@ class EmployeeController(interface.IEmployeeController):
         ) as span:
             try:
 
-                self.logger.info("Get employees by organization request", {
-                    "organization_id": organization_id
-                })
+                self.logger.info("Начало получения сотрудников организации")
 
                 employees = await self.employee_service.get_employees_by_organization(organization_id)
 
-                self.logger.info("Employees retrieved successfully", {
-                    "organization_id": organization_id,
-                    "count": len(employees)
-                })
+                self.logger.info("Получение сотрудников завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
                     status_code=200,
-                    content={
-                        "message": "Employees retrieved successfully",
-                        "employees": [emp.to_dict() for emp in employees]
-                    }
+                    content={"employees": [emp.to_dict() for emp in employees]}
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def update_employee_permissions(
@@ -141,9 +118,7 @@ class EmployeeController(interface.IEmployeeController):
         ) as span:
             try:
 
-                self.logger.info("Update employee permissions request", {
-                    "account_id": body.account_id
-                })
+                self.logger.info("Начало обновления прав сотрудника")
 
                 await self.employee_service.update_employee_permissions(
                     account_id=body.account_id,
@@ -155,19 +130,17 @@ class EmployeeController(interface.IEmployeeController):
                     sign_up_social_net_permission=body.sign_up_social_net_permission
                 )
 
-                self.logger.info("Employee permissions updated successfully", {
-                    "account_id": body.account_id
-                })
+                self.logger.info("Обновление прав сотрудника завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
                     status_code=200,
-                    content={"message": "Employee permissions updated successfully"}
+                    content={}
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def update_employee_role(
@@ -182,30 +155,24 @@ class EmployeeController(interface.IEmployeeController):
         ) as span:
             try:
 
-                self.logger.info("Update employee role request", {
-                    "account_id": body.account_id,
-                    "role": body.role.value
-                })
+                self.logger.info("Начало обновления роли сотрудника")
 
                 await self.employee_service.update_employee_role(
                     account_id=body.account_id,
                     role=body.role
                 )
 
-                self.logger.info("Employee role updated successfully", {
-                    "account_id": body.account_id,
-                    "role": body.role.value
-                })
+                self.logger.info("Обновление роли сотрудника завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
                     status_code=200,
-                    content={"message": "Employee role updated successfully"}
+                    content={}
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err
 
     async def delete_employee(self, request: Request, account_id: int) -> JSONResponse:
@@ -215,23 +182,19 @@ class EmployeeController(interface.IEmployeeController):
                 attributes={"account_id": account_id}
         ) as span:
             try:
-                self.logger.info("Delete employee request", {
-                    "account_id": account_id
-                })
+                self.logger.info("Начало удаления сотрудника")
 
                 await self.employee_service.delete_employee(account_id)
 
-                self.logger.info("Employee deleted successfully", {
-                    "account_id": account_id
-                })
+                self.logger.info("Удаление сотрудника завершено")
 
                 span.set_status(Status(StatusCode.OK))
                 return JSONResponse(
                     status_code=200,
-                    content={"message": "Employee deleted successfully"}
+                    content={}
                 )
 
             except Exception as err:
-                span.record_exception(err)
-                span.set_status(Status(StatusCode.ERROR, str(err)))
+
+                span.set_status(StatusCode.ERROR, str(err))
                 raise err

@@ -30,7 +30,6 @@ def include_middleware(
         app: FastAPI,
         http_middleware: interface.IHttpMiddleware,
 ):
-    # Порядок middleware важен - они применяются в обратном порядке регистрации
     http_middleware.authorization_middleware04(app)
     http_middleware.logger_middleware03(app)
     http_middleware.metrics_middleware02(app)
@@ -80,7 +79,6 @@ def include_employee_handlers(
         employee_controller.update_employee_permissions,
         methods=["PUT"],
         tags=["Employee"],
-        response_model=UpdateEmployeePermissionsResponse,
         summary="Обновить права сотрудника",
         description="Обновляет права доступа сотрудника"
     )
@@ -91,7 +89,6 @@ def include_employee_handlers(
         employee_controller.update_employee_role,
         methods=["PUT"],
         tags=["Employee"],
-        response_model=UpdateEmployeeRoleResponse,
         summary="Обновить роль сотрудника",
         description="Обновляет роль сотрудника в организации"
     )
@@ -102,7 +99,6 @@ def include_employee_handlers(
         employee_controller.delete_employee,
         methods=["DELETE"],
         tags=["Employee"],
-        response_model=DeleteEmployeeResponse,
         summary="Удалить сотрудника",
         description="Удаляет сотрудника из организации"
     )
@@ -131,11 +127,13 @@ def include_db_handler(app: FastAPI, db: interface.IDB, prefix: str):
     )
     app.add_api_route(prefix + "/health", heath_check_handler(), methods=["GET"])
 
+
 def heath_check_handler():
     async def heath_check():
         return "ok"
 
     return heath_check
+
 
 def create_table_handler(db: interface.IDB):
     async def create_table():

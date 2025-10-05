@@ -46,7 +46,7 @@ class EmployeeService(interface.IEmployeeService):
                 sign_up_social_net_permission = False
 
                 if role == "admin":
-                    required_moderation = True
+                    required_moderation = False
                     autoposting_permission = True
                     add_employee_permission = True
                     edit_employee_perm_permission = True
@@ -78,8 +78,8 @@ class EmployeeService(interface.IEmployeeService):
                 return employee_id
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def get_employee_by_account_id(self, account_id: int) -> list[model.Employee]:
@@ -95,8 +95,8 @@ class EmployeeService(interface.IEmployeeService):
                 return employee
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def get_employees_by_organization(self, organization_id: int) -> list[model.Employee]:
@@ -112,8 +112,8 @@ class EmployeeService(interface.IEmployeeService):
                 return employees
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def update_employee_permissions(
@@ -150,8 +150,8 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.OK))
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def update_employee_role(
@@ -178,8 +178,8 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.OK))
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def delete_employee(self, account_id: int) -> None:
@@ -199,8 +199,8 @@ class EmployeeService(interface.IEmployeeService):
                 span.set_status(Status(StatusCode.OK))
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def check_employee_permission(
@@ -217,8 +217,8 @@ class EmployeeService(interface.IEmployeeService):
                 return await self._check_employee_permission(account_id, permission_type)
 
             except Exception as e:
-                span.record_exception(e)
-                span.set_status(Status(StatusCode.ERROR, str(e)))
+                
+                span.set_status(StatusCode.ERROR, str(e))
                 raise
 
     async def _check_employee_permission(
