@@ -36,6 +36,7 @@ class EmployeeService(interface.IEmployeeService):
             try:
                 # Проверяем права пригласившего сотрудника
                 if invited_from_account_id != 0:  # 0 означает создание первого админа
+                    self.logger.info("Проверка прав приглашающего сотрудника")
                     await self._check_employee_permission(invited_from_account_id, "add_employee_permission")
 
                 required_moderation = False
@@ -46,6 +47,7 @@ class EmployeeService(interface.IEmployeeService):
                 sign_up_social_net_permission = False
 
                 if role == "admin":
+                    self.logger.info("Назначение роли администратора")
                     required_moderation = False
                     autoposting_permission = True
                     add_employee_permission = True
@@ -135,6 +137,7 @@ class EmployeeService(interface.IEmployeeService):
                 # Проверяем, что сотрудник существует
                 employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
+                    self.logger.warning("Сотрудник не найден")
                     raise common.ErrEmployeeNotFound()
 
                 await self.employee_repo.update_employee_permissions(
@@ -168,6 +171,7 @@ class EmployeeService(interface.IEmployeeService):
                 # Проверяем, что сотрудник существует
                 employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
+                    self.logger.warning("Сотрудник не найден")
                     raise common.ErrEmployeeNotFound()
 
                 await self.employee_repo.update_employee_role(
@@ -192,6 +196,7 @@ class EmployeeService(interface.IEmployeeService):
                 # Проверяем, что сотрудник существует
                 employees = await self.employee_repo.get_employee_by_account_id(account_id)
                 if not employees:
+                    self.logger.warning("Сотрудник не найден")
                     raise common.ErrEmployeeNotFound()
 
                 await self.employee_repo.delete_employee(account_id)
@@ -229,12 +234,14 @@ class EmployeeService(interface.IEmployeeService):
         """Внутренний метод для проверки разрешений"""
         employees = await self.employee_repo.get_employee_by_account_id(account_id)
         if not employees:
+            self.logger.warning("Сотрудник не найден")
             raise common.ErrEmployeeNotFound()
 
         employee = employees[0]
 
         # Админы имеют все права
         if employee.role == model.EmployeeRole.ADMIN:
+            self.logger.info("Сотрудник является администратором")
             return True
 
         # Проверяем конкретное разрешение
@@ -250,6 +257,7 @@ class EmployeeService(interface.IEmployeeService):
         has_permission = permission_map.get(permission_type, False)
 
         if not has_permission:
+            self.logger.warning("Недостаточно прав")
             raise common.ErrInsufficientPermissions(f"Employee {account_id} lacks permission: {permission_type}")
 
         return True
