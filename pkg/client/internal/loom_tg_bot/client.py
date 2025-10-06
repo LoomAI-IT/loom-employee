@@ -1,10 +1,10 @@
 from contextvars import ContextVar
 
-from opentelemetry.trace import Status, StatusCode, SpanKind
+from opentelemetry.trace import SpanKind
 
-from internal import model
 from internal import interface
 from pkg.client.client import AsyncHTTPClient
+from pkg.trace_wrapper import traced_method
 
 
 class LoomTgBotClient(interface.ILoomTgBotClient):
@@ -29,6 +29,7 @@ class LoomTgBotClient(interface.ILoomTgBotClient):
 
         self.interserver_secret_key = interserver_secret_key
 
+    @traced_method(SpanKind.CLIENT)
     async def notify_employee_added(
             self,
             account_id: int,
@@ -36,28 +37,11 @@ class LoomTgBotClient(interface.ILoomTgBotClient):
             employee_name: str,
             role: str,
     ):
-        with self.tracer.start_as_current_span(
-                "LoomTgBotClient.notify_employee_added",
-                kind=SpanKind.CLIENT,
-                attributes={
-                    "account_id": account_id,
-                    "organization_id": organization_id,
-                    "employee_name": employee_name,
-                    "role": role
-                }
-        ) as span:
-            try:
-                body = {
-                    "account_id": account_id,
-                    "organization_id": organization_id,
-                    "employee_name": employee_name,
-                    "role": role,
-                    "interserver_secret_key": self.interserver_secret_key,
-                }
-                response = await self.client.post("/employee/notify/added", json=body)
-
-                span.set_status(Status(StatusCode.OK))
-            except Exception as e:
-                
-                span.set_status(StatusCode.ERROR, str(e))
-                raise
+        body = {
+            "account_id": account_id,
+            "organization_id": organization_id,
+            "employee_name": employee_name,
+            "role": role,
+            "interserver_secret_key": self.interserver_secret_key,
+        }
+        response = await self.client.post("/employee/notify/added", json=body)
