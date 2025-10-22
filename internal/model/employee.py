@@ -23,6 +23,8 @@ class Employee:
     edit_employee_perm_permission: bool
     top_up_balance_permission: bool
     sign_up_social_net_permission: bool
+    setting_category_permission: bool
+    setting_organization_permission: bool
 
     name: str
     role: EmployeeRole
@@ -43,6 +45,8 @@ class Employee:
                 edit_employee_perm_permission=row.edit_employee_perm_permission,
                 top_up_balance_permission=row.top_up_balance_permission,
                 sign_up_social_net_permission=row.sign_up_social_net_permission,
+                setting_category_permission=row.setting_category_permission,
+                setting_organization_permission=row.setting_organization_permission,
                 name=row.name,
                 role=EmployeeRole(row.role),
                 created_at=row.created_at
@@ -62,6 +66,8 @@ class Employee:
             "edit_employee_perm_permission": self.edit_employee_perm_permission,
             "top_up_balance_permission": self.top_up_balance_permission,
             "sign_up_social_net_permission": self.sign_up_social_net_permission,
+            "setting_category_permission": self.setting_category_permission,
+            "setting_organization_permission": self.setting_organization_permission,
             "name": self.name,
             "role": self.role.value,
             "created_at": self.created_at.isoformat()

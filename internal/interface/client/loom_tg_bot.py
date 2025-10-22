@@ -13,3 +13,9 @@ class ILoomTgBotClient(Protocol):
             employee_name: str,
             role: str,
     ): pass
+
+    @abstractmethod
+    async def notify_employee_deleted(
+            self,
+            account_id: int,
+    ): pass

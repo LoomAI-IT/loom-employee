@@ -45,3 +45,14 @@ class LoomTgBotClient(interface.ILoomTgBotClient):
             "interserver_secret_key": self.interserver_secret_key,
         }
         response = await self.client.post("/employee/notify/added", json=body)
+
+    @traced_method(SpanKind.CLIENT)
+    async def notify_employee_deleted(
+            self,
+            account_id: int,
+    ):
+        body = {
+            "account_id": account_id,
+            "interserver_secret_key": self.interserver_secret_key,
+        }
+        response = await self.client.post("/employee/notify/deleted", json=body)
