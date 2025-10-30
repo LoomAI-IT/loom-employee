@@ -27,6 +27,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
             edit_employee_perm_permission: bool = False,
             top_up_balance_permission: bool = False,
             sign_up_social_net_permission: bool = False,
+            setting_category_permission: bool = False,
+            setting_organization_permission: bool = False,
     ) -> int:
         args = {
             'organization_id': organization_id,
@@ -40,6 +42,8 @@ class EmployeeRepo(interface.IEmployeeRepo):
             'edit_employee_perm_permission': edit_employee_perm_permission,
             'top_up_balance_permission': top_up_balance_permission,
             'sign_up_social_net_permission': sign_up_social_net_permission,
+            'setting_category_permission': setting_category_permission,
+            'setting_organization_permission': setting_organization_permission,
         }
 
         employee_id = await self.db.insert(create_employee, args)
@@ -71,7 +75,9 @@ class EmployeeRepo(interface.IEmployeeRepo):
             add_employee_permission: bool = None,
             edit_employee_perm_permission: bool = None,
             top_up_balance_permission: bool = None,
-            sign_up_social_net_permission: bool = None
+            sign_up_social_net_permission: bool = None,
+            setting_category_permission: bool = None,
+            setting_organization_permission: bool = None
     ) -> None:
         update_fields = []
         args: dict = {'account_id': account_id}
@@ -99,6 +105,14 @@ class EmployeeRepo(interface.IEmployeeRepo):
         if sign_up_social_net_permission is not None:
             update_fields.append("sign_up_social_net_permission = :sign_up_social_net_permission")
             args['sign_up_social_net_permission'] = sign_up_social_net_permission
+
+        if setting_category_permission is not None:
+            update_fields.append("setting_category_permission = :setting_category_permission")
+            args['setting_category_permission'] = setting_category_permission
+
+        if setting_organization_permission is not None:
+            update_fields.append("setting_organization_permission = :setting_organization_permission")
+            args['setting_organization_permission'] = setting_organization_permission
 
         if not update_fields:
             return

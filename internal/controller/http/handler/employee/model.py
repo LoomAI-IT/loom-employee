@@ -18,6 +18,8 @@ class UpdateEmployeePermissionsBody(BaseModel):
     edit_employee_perm_permission: bool = None
     top_up_balance_permission: bool = None
     sign_up_social_net_permission: bool = None
+    setting_category_permission: bool = None
+    setting_organization_permission: bool = None
 
 
 class UpdateEmployeeRoleBody(BaseModel):

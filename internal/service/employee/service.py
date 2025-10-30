@@ -36,6 +36,8 @@ class EmployeeService(interface.IEmployeeService):
         edit_employee_perm_permission = False
         top_up_balance_permission = False
         sign_up_social_net_permission = False
+        setting_category_permission = False
+        setting_organization_permission = False
 
         if role == "admin":
             self.logger.info("Назначение роли администратора")
@@ -45,6 +47,8 @@ class EmployeeService(interface.IEmployeeService):
             edit_employee_perm_permission = True
             top_up_balance_permission = True
             sign_up_social_net_permission = True
+            setting_category_permission = True
+            setting_organization_permission = True
 
         employee_id = await self.employee_repo.create_employee(
             organization_id=organization_id,
@@ -58,6 +62,8 @@ class EmployeeService(interface.IEmployeeService):
             edit_employee_perm_permission=edit_employee_perm_permission,
             top_up_balance_permission=top_up_balance_permission,
             sign_up_social_net_permission=sign_up_social_net_permission,
+            setting_category_permission=setting_category_permission,
+            setting_organization_permission=setting_organization_permission,
         )
 
         await self.loom_tg_bot_client.notify_employee_added(
@@ -90,7 +96,9 @@ class EmployeeService(interface.IEmployeeService):
             add_employee_permission: bool = None,
             edit_employee_perm_permission: bool = None,
             top_up_balance_permission: bool = None,
-            sign_up_social_net_permission: bool = None
+            sign_up_social_net_permission: bool = None,
+            setting_category_permission: bool = None,
+            setting_organization_permission: bool = None
     ) -> None:
         employees = await self.employee_repo.get_employee_by_account_id(account_id)
         if not employees:
@@ -104,7 +112,9 @@ class EmployeeService(interface.IEmployeeService):
             add_employee_permission=add_employee_permission,
             edit_employee_perm_permission=edit_employee_perm_permission,
             top_up_balance_permission=top_up_balance_permission,
-            sign_up_social_net_permission=sign_up_social_net_permission
+            sign_up_social_net_permission=sign_up_social_net_permission,
+            setting_category_permission=setting_category_permission,
+            setting_organization_permission=setting_organization_permission
         )
 
     @traced_method()
@@ -131,6 +141,7 @@ class EmployeeService(interface.IEmployeeService):
             raise common.ErrEmployeeNotFound()
 
         await self.employee_repo.delete_employee(account_id)
+        await self.loom_tg_bot_client.notify_employee_deleted(account_id)
 
     @traced_method()
     async def check_employee_permission(
@@ -166,6 +177,8 @@ class EmployeeService(interface.IEmployeeService):
             "edit_employee_perm_permission": employee.edit_employee_perm_permission,
             "top_up_balance_permission": employee.top_up_balance_permission,
             "sign_up_social_net_permission": employee.sign_up_social_net_permission,
+            "setting_category_permission": employee.setting_category_permission,
+            "setting_organization_permission": employee.setting_organization_permission,
         }
 
         has_permission = permission_map.get(permission_type, False)

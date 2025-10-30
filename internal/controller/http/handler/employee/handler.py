@@ -73,7 +73,9 @@ class EmployeeController(interface.IEmployeeController):
             add_employee_permission=body.add_employee_permission,
             edit_employee_perm_permission=body.edit_employee_perm_permission,
             top_up_balance_permission=body.top_up_balance_permission,
-            sign_up_social_net_permission=body.sign_up_social_net_permission
+            sign_up_social_net_permission=body.sign_up_social_net_permission,
+            setting_category_permission=body.setting_category_permission,
+            setting_organization_permission=body.setting_organization_permission
         )
 
         return JSONResponse(

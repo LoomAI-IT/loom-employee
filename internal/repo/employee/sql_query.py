@@ -10,7 +10,9 @@ INSERT INTO employees (
     add_employee_permission,
     edit_employee_perm_permission,
     top_up_balance_permission,
-    sign_up_social_net_permission
+    sign_up_social_net_permission,
+    setting_category_permission,
+    setting_organization_permission
 )
 VALUES (
     :organization_id,
@@ -23,7 +25,9 @@ VALUES (
     :add_employee_permission,
     :edit_employee_perm_permission,
     :top_up_balance_permission,
-    :sign_up_social_net_permission
+    :sign_up_social_net_permission,
+    :setting_category_permission,
+    :setting_organization_permission
 )
 RETURNING id;
 """
