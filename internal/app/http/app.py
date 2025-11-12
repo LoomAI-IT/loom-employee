@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from starlette.responses import StreamingResponse
 
 from internal import model, interface
 from internal.controller.http.handler.employee.model import *
@@ -9,7 +8,8 @@ def NewHTTP(
         db: interface.IDB,
         employee_controller: interface.IEmployeeController,
         http_middleware: interface.IHttpMiddleware,
-        prefix: str
+        prefix: str,
+        environment: str
 ):
     app = FastAPI(
         title="Employee Service API",
@@ -20,7 +20,7 @@ def NewHTTP(
         redoc_url=prefix + "/redoc",
     )
     include_middleware(app, http_middleware)
-    include_db_handler(app, db, prefix)
+    include_db_handler(app, db, prefix, environment)
     include_employee_handlers(app, employee_controller, prefix)
 
     return app
@@ -103,7 +103,7 @@ def include_employee_handlers(
     )
 
 
-def include_db_handler(app: FastAPI, db: interface.IDB, prefix: str):
+def include_db_handler(app: FastAPI, db: interface.IDB, prefix: str, environment: str):
     """
     Добавляет служебные эндпоинты для управления базой данных
     """
@@ -118,7 +118,7 @@ def include_db_handler(app: FastAPI, db: interface.IDB, prefix: str):
 
     app.add_api_route(
         prefix + "/table/drop",
-        drop_table_handler(db),
+        drop_table_handler(db, environment),
         methods=["GET"],
         tags=["Database"],
         summary="Удалить таблицы",
@@ -145,8 +145,10 @@ def create_table_handler(db: interface.IDB):
     return create_table
 
 
-def drop_table_handler(db: interface.IDB):
+def drop_table_handler(db: interface.IDB, environment: str):
     async def drop_table():
+        if environment == "prod":
+            return {"message": "Tables not dropped in production"}
         try:
             await db.multi_query(model.drop_queries)
             return {"message": "Tables dropped successfully"}
